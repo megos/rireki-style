@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2004, 2006
+# Copyright (c) 2004, 2006, 2020
 # Tama Communications Corporation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -23,24 +23,23 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-PDF = rireki.pdf
-DVI = rireki.dvi
+VERSION = 3.0
+TARGET = rireki.pdf
+LATEX = uplatex
+#LATEX = lualatex
 
-all: $(PDF)
+all: $(TARGET)
 
-dvi: $(DVI)
-pdf: $(PDF)
-
-rireki.pdf: rireki.dvi
-	dvipdfmx -p "182mm,257mm" rireki.dvi
-rireki.dvi: rireki.tex rireki.sty
-	platex rireki
-# open コマンドは OSX のみ
-view: $(PDF)
-	open $(PDF)
-print: $(PDF)
-	lpr $(PDF)
-package: clean
-	dir=`pwd`; name=`basename $$dir`; cd ..; tar czvf $$name.tar.gz $$name
+$(TARGET): rireki.tex rireki.sty
+ifeq ($(LATEX),lualatex)
+	$(LATEX) rireki
+else
+	$(LATEX) rireki
+	dvipdfmx -p jisb5 rireki.dvi
+endif
+view: $(TARGET)
+	open $(TARGET)
+print: $(TARGET)
+	lpr $(TARGET)
 clean:
-	rm -f $(DVI) $(PDF) rireki.aux rireki.log
+	rm -f $(TARGET) *.dvi *.aux *.log photo-eps-converted-to.pdf
