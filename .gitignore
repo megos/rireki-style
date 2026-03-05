@@ -2,5 +2,7 @@
 *.dvi
 *.log
 *.pdf
+*.jpg
+*.jpeg
 
 .DS_Store
