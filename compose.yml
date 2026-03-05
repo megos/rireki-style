@@ -1,0 +1,8 @@
+name: rireki-style
+
+services:
+  build:
+    image: paperist/texlive-ja:latest
+    volumes:
+      - .:/workdir
+    command: sh -c "uplatex rireki && dvipdfmx -p jisb5 rireki.dvi"
